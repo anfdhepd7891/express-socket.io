@@ -41,10 +41,12 @@ io.set('origins', '*:*');
   })
   
 vvocket.on("connection", (bbsocket) => {
+	console.log(bbsocket);
   var msg = [{"ticket":"UNIQUE_TICKET"},{"type":"trade","codes":["KRW-BTC"]},{"type":"orderbook","codes":["KRW-ETH"]},{"type":"ticker", "codes":["KRW-EOS"]}];
 
 			msg = JSON.stringify(msg);
   bbsocket.emit(msg);
+	
 });
 
 vvocket.onAny((event) => {
