@@ -29,7 +29,8 @@ const socketIO = require('socket.io')
 module.exports = function createServer() {
 
   const app = express()
-
+app.use(cors());
+app.options('*', cors());
   const server = http.Server(app)
   const io = socketIO(server)
 io.set('origins', '*:*');
