@@ -60,9 +60,6 @@ socketvv.emit(msg);
 
 
 
-vvocket.onAny((event) => {
-  console.log(`got ${event}`);
-});
   io.on('connection', function (socket) {
     console.log(socket);
     const serverMessage = {message: "PING"}
