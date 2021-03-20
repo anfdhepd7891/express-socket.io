@@ -24,9 +24,10 @@
 const express = require('express')
 const morgan = require('morgan')
 const http = require('http')
-const csoket = require("socket.io-client");
 const socketIO = require('socket.io')
 const cors = require('cors');
+const WebSocketWrapper = require("ws-wrapper");
+
 module.exports = function createServer() {
 
   const app = express()
@@ -44,16 +45,20 @@ io.set('origins', '*:*');
   app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html')
   })
- const vvocket = csoket.connect("wss://api.upbit.com/websocket/v1");
+	var socketvv = new WebSocketWrapper(new WebSocket("wss://api.upbit.com/websocket/v1"));
 
-vvocket.on("connection", (bbsocket) => {
-	console.log(bbsocket);
+socketvv.on("msg", function(from, msg) {
+	console.log(`Received message from ${from}: ${msg}`);
+});
   var msg = [{"ticket":"UNIQUE_TICKET"},{"type":"trade","codes":["KRW-BTC"]},{"type":"orderbook","codes":["KRW-ETH"]},{"type":"ticker", "codes":["KRW-EOS"]}];
 
-			msg = JSON.stringify(msg);
-  bbsocket.emit(msg);
+			msg = JSON.stringify(msg);	
+socketvv.emit(msg);
 	
-});
+
+
+
+
 
 vvocket.onAny((event) => {
   console.log(`got ${event}`);
