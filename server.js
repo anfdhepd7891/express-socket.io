@@ -56,12 +56,14 @@ socketvv.send(msg);
 	
 socketvv.on("message", (from, msg) => {
 		 try{
-	       var enc = new TextDecoder("utf-8");
+// 	       var enc = new TextDecoder("utf-8");
 
-			var arr = new Uint8Array(msg);
-console.log(enc.decode(arr));
+// 			var arr = new Uint8Array(msg);
+			 
+			 var sss = msg.toString('utf-8')
+console.log(JSON.parse(sss));
 
-io.emit('chat message', enc.decode(arr));
+io.emit('chat message', JSON.parse(sss));
  }catch(e){
 console.log(e);	 
  }
