@@ -28,7 +28,6 @@ const csoket = require("socket.io-client");
 const socketIO = require('socket.io')
 const cors = require('cors');
 module.exports = function createServer() {
-const vvocket = csoket.connect("wss://api.upbit.com/websocket/v1");
 
   const app = express()
 app.use(cors());
@@ -39,7 +38,14 @@ io.set('origins', '*:*');
   server.listen(80, function () {
     console.log("Server started on port 80")
   })
-  
+ 
+  app.use(morgan('dev'))
+
+  app.get('/', function (req, res) {
+    res.sendFile(__dirname + '/index.html')
+  })
+ const vvocket = csoket.connect("wss://api.upbit.com/websocket/v1");
+
 vvocket.on("connection", (bbsocket) => {
 	console.log(bbsocket);
   var msg = [{"ticket":"UNIQUE_TICKET"},{"type":"trade","codes":["KRW-BTC"]},{"type":"orderbook","codes":["KRW-ETH"]},{"type":"ticker", "codes":["KRW-EOS"]}];
@@ -52,12 +58,6 @@ vvocket.on("connection", (bbsocket) => {
 vvocket.onAny((event) => {
   console.log(`got ${event}`);
 });
-  app.use(morgan('dev'))
-
-  app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html')
-  })
-
   io.on('connection', function (socket) {
     console.log(socket);
     const serverMessage = {message: "PING"}
