@@ -68,10 +68,8 @@ console.log(e);
 	
 socketvv.on("disconnect", () => {
 	console.log("bye")
-	   setTimeout(function() {
-            console.log('trade 재접속');
         tradeServerConnect();
-        }, 1000);
+   
 	
 });
 }
