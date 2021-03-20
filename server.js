@@ -45,6 +45,7 @@ io.set('origins', '*:*');
   })
 
   io.on('connection', function (socket) {
+    console.log(socket);
     const serverMessage = {message: "PING"}
     let count = 99911;
     socket.emit("server-ping", serverMessage)
