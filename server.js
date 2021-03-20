@@ -28,7 +28,7 @@ const csoket = require("socket.io-client");
 const socketIO = require('socket.io')
 const cors = require('cors');
 module.exports = function createServer() {
-const vvocket = csoket("wss://api.upbit.com/websocket/v1");
+const vvocket = csoket.connect("wss://api.upbit.com/websocket/v1");
 
   const app = express()
 app.use(cors());
