@@ -25,7 +25,7 @@ const express = require('express')
 const morgan = require('morgan')
 const http = require('http')
 const socketIO = require('socket.io')
-
+const cors = require('cors');
 module.exports = function createServer() {
 
   const app = express()
