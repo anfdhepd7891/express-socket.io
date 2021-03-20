@@ -49,7 +49,7 @@ io.set('origins', '*:*');
 
 var socketvv = new WebSocketWrapper(new WebSocket("wss://api.upbit.com/websocket/v1"));
 
-socketvv.on("connection", (socket) => {
+socketvv.on("connect", (socket) => {
 		var msg = '[{"ticket":"fiwjfoew"},{"type":"trade","codes":["KRW-BTC", "KRW-ETH"]}]'
 socket.send(msg);	
 console.log(socket);
