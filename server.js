@@ -50,7 +50,9 @@ io.set('origins', '*:*');
 	var msg = '[{"ticket":"fiwjfoew"},{"type":"trade","codes":["KRW-BTC", "KRW-ETH"]}]'
 socketvv.send(msg);	
 
-
+socketvv.on("disconnect", () => {
+		console.log("bye")
+	});
 	console.log(socketvv);
 
 socketvv.on('message',function(from, msg)  {
