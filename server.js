@@ -54,11 +54,15 @@ socketvv.send(msg);
 	console.log(socketvv);
 
 socketvv.on('message',function(from, msg)  {
- 
-	                   var enc = new TextDecoder("utf-8");
+ try{
+	       var enc = new TextDecoder("utf-8");
 
 			var arr = new Uint8Array(msg);
 console.log(enc.decode(arr));
+ }catch(e){
+console.log(e);	 
+ }
+	             
 	
 });
 
