@@ -45,14 +45,36 @@ io.set('origins', '*:*');
   app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html')
   })
-	var socketvv = new WebSocketWrapper(new WebSocket("wss://api.upbit.com/websocket/v1"));
 
+	
+	const RECONNECT_VALUE_MIN = 1000 // 1 second
+    , RECONNECT_VALUE_MAX = 1000 * 60 // 1 minute
+    , RECONNECT_VALUE_FACTOR = 1.4;
+
+let reconnectValue = RECONNECT_VALUE_MIN;
+	var socketvv = new WebSocketWrapper(new WebSocket("wss://api.upbit.com/websocket/v1"),{  "requestTimeout": 8 * 1000 });
+socketvv.autoReconnect = true;
+socketvv.on("error", (err) => {
+    socketvv.disconnect();
+	console.log("bye")
+}).on("disconnect", function(event, wasOpen) {
+    // Use exponential back-off to reconnect if `autoReconnect` is set
+    if(wasOpen) {
+        reconnectValue = RECONNECT_VALUE_MIN;
+    } else {
+        reconnectValue = Math.min(reconnectValue * RECONNECT_VALUE_FACTOR,
+            RECONNECT_VALUE_MAX);
+    }
+    if(this.autoReconnect) {
+        setTimeout(() => {
+            socketvv.bind(new WebSocket("wss://api.upbit.com/websocket/v1") );
+        }, Math.random() * reconnectValue);
+    }
+});
 	var msg = '[{"ticket":"fiwjfoew"},{"type":"trade","codes":["KRW-BTC", "KRW-ETH"]}]'
 socketvv.send(msg);	
 
-socketvv.on("disconnect", () => {
-		console.log("bye")
-	});
+
 	console.log(socketvv);
 
 socketvv.on('message',function(from, msg)  {
