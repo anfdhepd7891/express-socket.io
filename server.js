@@ -33,7 +33,7 @@ module.exports = function createServer() {
 
     const app = express()
 
-    const binance = new ccxws.Binance();
+    const upbit = new ccxws.upbit();
     const server = http.Server(app)
     const io = socketIO(server)
     io.set('origins', '*:*');
@@ -53,7 +53,7 @@ module.exports = function createServer() {
         res.send("HELLO")
     })
 
-    binance.on("trade", trade => io.emit('chat message', trade));
+    upbit.on("trade", trade => io.emit('chat message', trade));
 
 
     // subscribe to trades
