@@ -36,11 +36,12 @@ module.exports = function createServer() {
     const upbit = new ccxws.upbit();
     const server = http.Server(app)
     const io = socketIO(server)
-    app.use(morgan('dev'))
+
     app.use(cors());
     app.options('*', cors());
 
     io.set('origins', '*:*');
+    app.use(morgan('dev'))
     const market = {
         id: "KRW-ETH", // remote_id used by the exchange
         base: "KRW", // standardized base symbol for Bitcoin
