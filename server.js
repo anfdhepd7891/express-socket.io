@@ -123,10 +123,10 @@ module.exports = function createServer() {
         })
 
         socket.on("Ticker", (data) => {
+            var eeee
+            upbit._constructTicker(eeee, market);
 
-            let ticker = upbit._constructTicker('zz', market);
-
-            socket.emit("Ticker", ticker)
+            socket.emit("Ticker", eeee)
 
         })
 
