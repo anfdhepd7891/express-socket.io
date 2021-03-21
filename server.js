@@ -55,14 +55,9 @@ module.exports = function createServer() {
 
     binance.on("trade", trade => io.emit('chat message', trade));
 
-    // handle level2 orderbook snapshots
-    binance.on("l2snapshot", snapshot => io.emit('chat message', snapshot));
 
     // subscribe to trades
     binance.subscribeTrades(market);
-
-    // subscribe to level2 orderbook snapshots
-    binance.subscribeLevel2Snapshots(market);
 
     function tradeServerConnect() {
         var socketvv = new WebSocketWrapper(new WebSocket("wss://stream.bybit.com/realtime"));
@@ -79,7 +74,7 @@ module.exports = function createServer() {
                 console.log(data);
 
 
-                io.emit('chat message', data);
+                // io.emit('chat message', data);
             } catch (e) {
 
             }
