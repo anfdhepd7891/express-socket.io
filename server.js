@@ -17,15 +17,12 @@ app.use(function(req, res, next) {
     req.testing = 'testing';
     return next();
 });
-
+const aWss = expressWs.getWss();
 
 function sendmsg(dd, gf) {
-    const param = {
-        msg: dd,
-        data: gf,
-    };
+
     aWss.clients.forEach(function(client) {
-        client.send(param);
+        client.send(JSON.stringify({ msg: dd, data: gf }));
     });
 }
 
