@@ -28,21 +28,27 @@ const socketIO = require('socket.io')
 const cors = require('cors');
 const WebSocketWrapper = require("ws-wrapper");
 const WebSocket = require('ws');
+const ccxws = require("ccxws");
 module.exports = function createServer() {
 
     const app = express()
-    app.use(cors());
-    app.options('*', cors());
+
+    const binance = new ccxws.Binance();
     const server = http.Server(app)
     const io = socketIO(server)
     io.set('origins', '*:*');
-
+    const market = {
+        id: "BTCUSDT", // remote_id used by the exchange
+        base: "BTC", // standardized base symbol for Bitcoin
+        quote: "USDT", // standardized quote symbol for Tether
+    };
     server.listen(80, function() {
         console.log("Server started on port 80")
     })
 
     app.use(morgan('dev'))
-
+    app.use(cors());
+    app.options('*', cors());
     app.get('/', function(req, res) {
         res.send("HELLO")
     })
@@ -53,7 +59,16 @@ module.exports = function createServer() {
         // var sss = JSON.stringify([{ "ticket": "fiwwefwefwecjfoew" }, { "type": "trade", "codes": ["KRW-BTC", "KRW-ETH"] }])
         // socketvv.binaryType = 'arraybuffer';
         socketvv.send('{"op": "subscribe", "args": ["trade.ETHUSD"]}');
+        binance.on("trade", trade => socketvv.send(trade));
 
+        // handle level2 orderbook snapshots
+        binance.on("l2snapshot", snapshot => socketvv.send(snapshot));
+
+        // subscribe to trades
+        binance.subscribeTrades(market);
+
+        // subscribe to level2 orderbook snapshots
+        binance.subscribeLevel2Snapshots(market);
 
         socketvv.on("message", (from, msg) => {
             try {
