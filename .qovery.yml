@@ -1,0 +1,11 @@
+---
+application:
+  name: "express-socket-io"
+  project: "rgrgff"
+  organization: "QoveryCommunity"
+routers:
+- name: "main-express-socket-io"
+  routes:
+  - application_name: "express-socket-io"
+    paths:
+    - "/*"
