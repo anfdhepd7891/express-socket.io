@@ -44,7 +44,7 @@ module.exports = function createServer() {
     app.use(morgan('dev'))
 
     app.get('/', function(req, res) {
-        res.sendFile(__dirname + '/index.html')
+        res.send("HELLO")
     })
 
 
