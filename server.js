@@ -49,10 +49,10 @@ module.exports = function createServer() {
 
 
     function tradeServerConnect() {
-        var socketvv = new WebSocketWrapper(new WebSocket("wss://api.upbit.com/websocket/v1"));
-        var sss = JSON.stringify([{ "ticket": "fiwwefwefwecjfoew" }, { "type": "trade", "codes": ["KRW-BTC", "KRW-ETH"] }])
-        socketvv.binaryType = 'arraybuffer';
-        socketvv.send(sss);
+        var socketvv = new WebSocketWrapper(new WebSocket("wss://stream.bybit.com/realtime"));
+        // var sss = JSON.stringify([{ "ticket": "fiwwefwefwecjfoew" }, { "type": "trade", "codes": ["KRW-BTC", "KRW-ETH"] }])
+        // socketvv.binaryType = 'arraybuffer';
+        socketvv.send('{"op": "subscribe", "args": ["trade.ETHUSD"]}');
 
 
         socketvv.on("message", (from, msg) => {
