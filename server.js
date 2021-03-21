@@ -39,9 +39,7 @@ module.exports = function createServer() {
     const io = socketIO(server, {
         cors: {
             origin: "https://playe.us",
-            methods: ["GET", "POST"],
-            allowedHeaders: ["my-custom-header"],
-            credentials: true
+            methods: ["GET", "POST"]
         }
     })
 
