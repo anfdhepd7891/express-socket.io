@@ -15,10 +15,11 @@ module.exports = function createServer() {
     app.use(cors());
     app.options('*', cors());
     const upbit = new ccxws.upbit();
-    const server = http.Server(app)
+
+    const wss = new WebSocket.Server({ app });
+    const server = http.Server(wss)
 
 
-    const wss = new WebSocket.Server({ server });
 
     wss.on('connection', function connection(ws) {
         ws.on('message', function incoming(message) {
