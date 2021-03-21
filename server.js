@@ -58,9 +58,8 @@ module.exports = function createServer() {
         socketvv.on("message", (from, msg) => {
             try {
 
-                const enc = new TextDecoder("utf-8");
-                const arr = new Uint8Array(msg);
-                const data = JSON.parse(enc.decode(arr));
+
+                const data = JSON.parse(msg);
                 console.log(data);
 
 
