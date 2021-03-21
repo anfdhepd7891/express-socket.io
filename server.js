@@ -57,7 +57,7 @@ module.exports = function createServer() {
     })
 
     upbit.on("Ticker", (Ticker, market) => io.emit('Ticker', Ticker));
-    upbit.on("l2snapshot", (snapshot, market) => io.emit('snapshot', snapshot));
+    upbit.on("l2snapshot", (snapshot, market) => io.emit('snapshot', snapshot, market));
     upbit.on("trade", (trade, market) => io.emit('trade', trade));
 
 
@@ -109,6 +109,7 @@ module.exports = function createServer() {
         const serverMessage = { message: "PING" }
         let count = 99911;
         socket.emit("server-ping", serverMessage)
+
         socket.on("client-pong", (data) => {
             console.log(data.message)
             if (count > 0) {
@@ -116,6 +117,16 @@ module.exports = function createServer() {
                 count--
             }
         })
+
+        socket.on("Ticker", (data) => {
+
+
+            const ef = upbit._sendSubTicker(market);
+            socket.emit("Ticker", ef)
+
+        })
+
+
     })
 
     return server
