@@ -38,9 +38,9 @@ module.exports = function createServer() {
     const io = socketIO(server)
     io.set('origins', '*:*');
     const market = {
-        id: "ETHKRW", // remote_id used by the exchange
+        id: "ETHUSDT", // remote_id used by the exchange
         base: "ETH", // standardized base symbol for Bitcoin
-        quote: "KRW", // standardized quote symbol for Tether
+        quote: "USDT", // standardized quote symbol for Tether
     };
     server.listen(80, function() {
         console.log("Server started on port 80")
