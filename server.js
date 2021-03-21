@@ -20,8 +20,12 @@ app.use(function(req, res, next) {
 const aWss = expressWs.getWss();
 
 function sendmsg(dd, gf) {
+    const param = {
+        msg: dd,
+        data: gf,
+    };
     aWss.clients.forEach(function(client) {
-        client.send(dd, gf);
+        client.send(param);
     });
 }
 
