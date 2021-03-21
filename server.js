@@ -62,7 +62,7 @@ app.ws('/', function(ws, req) {
     console.log('socket', req.testing);
 });
 
-app.listen(80);
+app.listen(8080);
 
 
 
