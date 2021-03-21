@@ -20,7 +20,13 @@ module.exports = function createServer() {
 
     const wss = new WebSocket.Server({ server });
 
+    wss.on('connection', function connection(ws) {
+        ws.on('message', function incoming(message) {
+            console.log('received: %s', message);
+        });
 
+        ws.send('something');
+    });
     const market = {
         id: "KRW-ETH", // remote_id used by the exchange
         base: "KRW", // standardized base symbol for Bitcoin
@@ -29,13 +35,7 @@ module.exports = function createServer() {
     server.listen(80, function() {
         console.log("Server started on port 80")
     })
-    wss.on('connection', function connection(ws) {
-        ws.on('message', function incoming(message) {
-            console.log('received: %s', message);
-        });
 
-        ws.send('something');
-    });
 
     app.use(morgan('dev'))
     app.get('/', function(req, res) {
