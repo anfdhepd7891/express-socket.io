@@ -30,76 +30,74 @@ const WebSocketWrapper = require("ws-wrapper");
 const WebSocket = require('ws');
 module.exports = function createServer() {
 
-  const app = express()
-app.use(cors());
-app.options('*', cors());
-  const server = http.Server(app)
-  const io = socketIO(server)
-io.set('origins', '*:*');
-	
-  server.listen(80, function () {
-    console.log("Server started on port 80")
-  })
- 
-  app.use(morgan('dev'))
+    const app = express()
+    app.use(cors());
+    app.options('*', cors());
+    const server = http.Server(app)
+    const io = socketIO(server)
+    io.set('origins', '*:*');
 
-  app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html')
-  })
-
-
-function tradeServerConnect() {
- var socketvv = new WebSocketWrapper(new WebSocket("wss://api.upbit.com/websocket/v1"));
-	var msg = '[{"ticket":"fiwjfoew"},{"type":"trade","codes":["KRW-BTC", "KRW-ETH"]}]'
-socketvv.send(msg);	
-
-	
-socketvv.on("message", (from, msg) => {
-		 try{
-// 	       var enc = new TextDecoder("utf-8");
-
-// 			var arr = new Uint8Array(msg);
-			 
-			 var sss = msg.toString('utf-8')
-console.log(JSON.parse(sss));
-
-io.emit('chat message', JSON.parse(sss));
- }catch(e){
-console.log(e);	 
- }
-	});
-	
-socketvv.on("disconnect", () => {
-	console.log("bye")
-	setTimeout(() => {
-		
-		 tradeServerConnect();
-	}, 1000);
-       
-   
-	
-});
-}
-
-
-
-tradeServerConnect();
-
-
-  io.on('connection', function (socket) {
-    console.log(socket);
-    const serverMessage = {message: "PING"}
-    let count = 99911;
-    socket.emit("server-ping", serverMessage)
-    socket.on("client-pong", (data) => {
-      console.log(data.message)
-      if (count > 0) {
-        socket.emit("server-ping", count)
-        count --
-      }
+    server.listen(80, function() {
+        console.log("Server started on port 80")
     })
-  })
-  
-  return server
+
+    app.use(morgan('dev'))
+
+    app.get('/', function(req, res) {
+        res.sendFile(__dirname + '/index.html')
+    })
+
+
+    function tradeServerConnect() {
+        var socketvv = new WebSocketWrapper(new WebSocket("wss://api.upbit.com/websocket/v1"));
+        var msg = '[{"ticket":"fiwjfoew"},{"type":"trade","codes":["KRW-BTC", "KRW-ETH"]}]'
+        socketvv.send(msg);
+
+
+        socketvv.on("message", (from, msg) => {
+            try {
+
+                console.log(msg);
+                var sss = msg.toString('utf-8')
+                console.log(JSON.parse(sss));
+
+                io.emit('chat message', JSON.parse(sss));
+            } catch (e) {
+                console.log(e);
+            }
+        });
+
+        socketvv.on("disconnect", () => {
+            console.log("bye")
+            setTimeout(() => {
+
+                tradeServerConnect();
+            }, 1000);
+
+
+
+        });
+    }
+
+
+
+    tradeServerConnect();
+
+
+    io.on('connection', function(socket) {
+        console.log(socket);
+        const serverMessage = { message: "PING" }
+        let count = 99911;
+        socket.emit("server-ping", serverMessage)
+        socket.on("client-pong", (data) => {
+            console.log(data.message)
+            if (count > 0) {
+                socket.emit("server-ping", count)
+                count--
+            }
+        })
+    })
+
+    return server
 
 }
