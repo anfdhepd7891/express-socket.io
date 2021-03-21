@@ -35,9 +35,15 @@ module.exports = function createServer() {
 
     const upbit = new ccxws.upbit();
     const server = http.Server(app)
-    const io = socketIO(server)
+    const io = socketIO(server, {
+        cors: {
+            origin: "https://playe.us",
+            methods: ["GET", "POST"],
+            allowedHeaders: ["my-custom-header"],
+            credentials: true
+        }
+    })
 
-    io.set('origins', '*playe.us*:*');
     app.use(cors());
     app.options('*', cors());
 
