@@ -16,18 +16,19 @@ module.exports = function createServer() {
     app.options('*', cors());
     const upbit = new ccxws.upbit();
 
-    const wss = new WebSocket.Server({ app });
-    const server = http.Server(wss)
 
+    const wss = new WebSocket.Server({ noServer: true });
+    const server = http.Server(app)
 
+    wss.on('connection', function connection(ws, request, client) {
+        ws.on('message', function message(msg) {
+            console.log(`Received message ${msg} from user ${client}`);
 
-    wss.on('connection', function connection(ws) {
-        ws.on('message', function incoming(message) {
-            console.log('received: %s', message);
+            ws.send('something');
         });
-
-        ws.send('something');
     });
+
+
     const market = {
         id: "KRW-ETH", // remote_id used by the exchange
         base: "KRW", // standardized base symbol for Bitcoin
