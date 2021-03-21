@@ -1,12 +1,50 @@
 var express = require('express');
 var app = express();
 var expressWs = require('express-ws')(app);
+const ccxws = require("ccxws");
+
+const upbit = new ccxws.upbit();
+
+const market = {
+    id: "KRW-ETH", // remote_id used by the exchange
+    base: "KRW", // standardized base symbol for Bitcoin
+    quote: "ETH", // standardized quote symbol for Tether
+};
+
 
 app.use(function(req, res, next) {
     console.log('middleware');
     req.testing = 'testing';
     return next();
 });
+const aWss = expressWs.getWss();
+
+function sendmsg(dd, gf) {
+    aWss.clients.forEach(function(client) {
+        client.send(dd, gf);
+    });
+}
+
+upbit.on("Ticker", (Ticker, market) => sendmsg('Ticker', Ticker));
+upbit.on("l2snapshot", (snapshot, market) => sendmsg('snapshot', snapshot, market));
+upbit.on("trade", (trade, market) => sendmsg('trade', trade));
+
+
+upbit.subscribeTicker(market);
+upbit.subscribeTrades(market);
+upbit.subscribeLevel2Snapshots(market);
+
+
+
+
+app.ws('/broadcast', function(ws, req) {
+
+    ws.on('message', message => {
+        this.getWss().clients.forEach(client => {
+            client.send(message)
+        })
+    })
+})
 
 app.get('/', function(req, res, next) {
     console.log('get route', req.testing);
@@ -15,6 +53,9 @@ app.get('/', function(req, res, next) {
 
 app.ws('/', function(ws, req) {
     ws.on('message', function(msg) {
+
+
+
         console.log(msg);
     });
     console.log('socket', req.testing);
@@ -33,14 +74,14 @@ app.listen(80);
 // const cors = require('cors');
 // const WebSocketWrapper = require("ws-wrapper");
 // const WebSocket = require('ws');
-// const ccxws = require("ccxws");
+
 // module.exports = function createServer() {
 
 
 //     const app = express()
 //     app.use(cors());
-//     app.options('*', cors());
-//     const upbit = new ccxws.upbit();
+//  app.options('*', cors());
+
 
 
 //     const wss = new WebSocket.Server({ noServer: true });
@@ -55,11 +96,7 @@ app.listen(80);
 //     });
 
 
-//     const market = {
-//         id: "KRW-ETH", // remote_id used by the exchange
-//         base: "KRW", // standardized base symbol for Bitcoin
-//         quote: "ETH", // standardized quote symbol for Tether
-//     };
+
 //     server.listen(80, function() {
 //         console.log("Server started on port 80")
 //     })
@@ -70,14 +107,7 @@ app.listen(80);
 //         res.send("HELLO")
 //     })
 
-//     upbit.on("Ticker", (Ticker, market) => io.emit('Ticker', Ticker));
-//     upbit.on("l2snapshot", (snapshot, market) => io.emit('snapshot', snapshot, market));
-//     upbit.on("trade", (trade, market) => io.emit('trade', trade));
 
-
-//     upbit.subscribeTicker(market);
-//     upbit.subscribeTrades(market);
-//     upbit.subscribeLevel2Snapshots(market);
 
 
 //     function tradeServerConnect() {
