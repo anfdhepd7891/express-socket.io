@@ -17,7 +17,7 @@ app.use(function(req, res, next) {
     req.testing = 'testing';
     return next();
 });
-const aWss = expressWs.getWss('/');
+
 
 function sendmsg(dd, gf) {
     const param = {
