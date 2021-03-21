@@ -53,13 +53,15 @@ module.exports = function createServer() {
 
 
     app.get('/', function(req, res) {
-        res.send("HELLO")
-    })
-    upbit.on("trade", trade => io.emit('chat message', trade));
+            res.send("HELLO")
+        })
+        // upbit.on("trade", trade => io.emit('chat message', trade));
+    upbit.on("l2snapshot", snapshot => io.emit('chat message', snapshot));
 
 
     // subscribe to trades
     upbit.subscribeTrades(market);
+    upbit.subscribeLevel2Snapshots(market);
 
     function tradeServerConnect() {
         var socketvv = new WebSocketWrapper(new WebSocket("wss://stream.bybit.com/realtime"));
