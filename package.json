@@ -2,12 +2,10 @@
     "name": "express-socket.io",
     "description": "How to use Socket.IO in express.js application - Simple example",
     "version": "1.0.0",
-    "contributors": [
-        {
-            "name": "Nicola Del Gobbo",
-            "email": "nicoladelgobbo@gmail.com"
-        }
-    ],
+    "contributors": [{
+        "name": "Nicola Del Gobbo",
+        "email": "nicoladelgobbo@gmail.com"
+    }],
     "keywords": [
         "expressjs",
         "web",
@@ -18,7 +16,7 @@
     ],
     "license": "Apache-2.0",
     "scripts": {
-        "start": "node index.js"
+        "start": "node server.js"
     },
     "engines": {
         "node": ">= 4.0.0"
