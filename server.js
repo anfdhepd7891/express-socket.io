@@ -51,7 +51,6 @@ module.exports = function createServer() {
     app.use(cors());
     app.options('*', cors());
 
-    io.set('origins', '*:*');
     app.use(morgan('dev'))
     const market = {
         id: "KRW-ETH", // remote_id used by the exchange
