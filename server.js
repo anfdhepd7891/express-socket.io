@@ -37,10 +37,10 @@ module.exports = function createServer() {
     const server = http.Server(app)
     const io = socketIO(server)
 
+    io.set('origins', '*playe.us*:*');
     app.use(cors());
     app.options('*', cors());
 
-    io.set('origins', '*playe.us*:*');
     app.use(morgan('dev'))
     const market = {
         id: "KRW-ETH", // remote_id used by the exchange
