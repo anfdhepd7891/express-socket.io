@@ -38,8 +38,8 @@ module.exports = function createServer() {
     const io = socketIO(server)
     io.set('origins', '*:*');
     const market = {
-        id: "BTCKRW", // remote_id used by the exchange
-        base: "BTC", // standardized base symbol for Bitcoin
+        id: "ETHKRW", // remote_id used by the exchange
+        base: "ETH", // standardized base symbol for Bitcoin
         quote: "KRW", // standardized quote symbol for Tether
     };
     server.listen(80, function() {
@@ -57,7 +57,7 @@ module.exports = function createServer() {
 
 
     // subscribe to trades
-    binance.subscribeTrades(market);
+    upbit.subscribeTrades(market);
 
     function tradeServerConnect() {
         var socketvv = new WebSocketWrapper(new WebSocket("wss://stream.bybit.com/realtime"));
