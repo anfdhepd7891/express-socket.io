@@ -9,7 +9,7 @@ const WebSocketWrapper = require("ws-wrapper");
 const WebSocket = require('ws');
 const ccxws = require("ccxws");
 module.exports = function createServer() {
-    const wss = new WebSocket.Server({ port: 80 });
+
 
     const app = express()
     app.use(cors());
@@ -17,14 +17,8 @@ module.exports = function createServer() {
     const upbit = new ccxws.upbit();
     const server = http.Server(app)
 
-    wss.on('connection', function connection(ws) {
-        ws.on('message', function incoming(message) {
-            console.log('received: %s', message);
-        });
 
-        ws.send('something');
-    });
-
+    const wss = new WebSocket.Server(server);
 
 
     const market = {
@@ -35,7 +29,13 @@ module.exports = function createServer() {
     server.listen(80, function() {
         console.log("Server started on port 80")
     })
+    wss.on('connection', function connection(ws) {
+        ws.on('message', function incoming(message) {
+            console.log('received: %s', message);
+        });
 
+        ws.send('something');
+    });
 
     app.use(morgan('dev'))
     app.get('/', function(req, res) {
