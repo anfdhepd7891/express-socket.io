@@ -50,8 +50,7 @@ module.exports = function createServer() {
 
     function tradeServerConnect() {
         var socketvv = new WebSocketWrapper(new WebSocket("wss://api.upbit.com/websocket/v1"));
-        var msg = '[{"ticket":"fiwjfoew"},{"type":"trade","codes":["KRW-BTC", "KRW-ETH"]},{"format":"SIMPLE"}]'
-        var sss = JSON.parse(msg)
+        var sss = JSON.stringify([{ "ticket": "fiwjfoew" }, { "type": "trade", "codes": ["KRW-BTC", "KRW-ETH"] }, { "format": "SIMPLE" }])
         socketvv.binaryType = 'arraybuffer';
         socketvv.send(sss);
 
@@ -59,11 +58,13 @@ module.exports = function createServer() {
         socketvv.on("message", (from, msg) => {
             try {
 
+                const enc = new TextDecoder("utf-8");
+                const arr = new Uint8Array(msg);
+                const data = JSON.parse(enc.decode(arr));
+                console.log(data);
 
-                console.log(msg.toString());
 
-
-                io.emit('chat message', msg.toString());
+                io.emit('chat message', data);
             } catch (e) {
                 console.log(e);
             }
