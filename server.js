@@ -13,7 +13,7 @@ const market = {
 
 
 app.use(function(req, res, next) {
-    console.log('middleware');
+
     req.testing = 'testing';
     return next();
 });
