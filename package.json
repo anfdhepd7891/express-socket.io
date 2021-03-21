@@ -2,10 +2,12 @@
     "name": "express-socket.io",
     "description": "How to use Socket.IO in express.js application - Simple example",
     "version": "1.0.0",
-    "contributors": [{
-        "name": "Nicola Del Gobbo",
-        "email": "nicoladelgobbo@gmail.com"
-    }],
+    "contributors": [
+        {
+            "name": "Nicola Del Gobbo",
+            "email": "nicoladelgobbo@gmail.com"
+        }
+    ],
     "keywords": [
         "expressjs",
         "web",
@@ -32,19 +34,19 @@
     "dependencies": {
         "ccxws": "^0.43.0",
         "cors": "^2.8.5",
-        "express": "^4.14.0",
+        "express": "^4.17.1",
+        "express-ws": "^4.0.0",
         "morgan": "^1.7.0",
         "socket.io": "^4.0.0",
         "socket.io-client": "^4.0.0",
         "url": "^0.11.0",
-        "ws": ">=3.3.1 <4",
+        "ws": "^3.3.3",
         "ws-wrapper": "^2.0.2"
     },
     "files": [
         "LICENSE",
         "README.md",
         "CHANGELOG.md",
-        "index.js",
         "server.js"
     ]
 }

@@ -1,36 +1,26 @@
-const http = require('http');
-const WebSocket = require('ws');
-const url = require('url');
+var express = require('express');
+var app = express();
+var expressWs = require('express-ws')(app);
 
-const server = http.createServer();
-const wss1 = new WebSocket.Server({ noServer: true });
-const wss2 = new WebSocket.Server({ noServer: true });
-
-wss1.on('connection', function connection(ws) {
-    // ...
+app.use(function(req, res, next) {
+    console.log('middleware');
+    req.testing = 'testing';
+    return next();
 });
 
-wss2.on('connection', function connection(ws) {
-    // ...
+app.get('/', function(req, res, next) {
+    console.log('get route', req.testing);
+    res.end();
 });
 
-server.on('upgrade', function upgrade(request, socket, head) {
-    const pathname = url.parse(request.url).pathname;
-
-    if (pathname === '/foo') {
-        wss1.handleUpgrade(request, socket, head, function done(ws) {
-            wss1.emit('connection', ws, request);
-        });
-    } else if (pathname === '/bar') {
-        wss2.handleUpgrade(request, socket, head, function done(ws) {
-            wss2.emit('connection', ws, request);
-        });
-    } else {
-        socket.destroy();
-    }
+app.ws('/', function(ws, req) {
+    ws.on('message', function(msg) {
+        console.log(msg);
+    });
+    console.log('socket', req.testing);
 });
 
-server.listen(80);
+app.listen(80);
 
 
 
