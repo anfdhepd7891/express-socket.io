@@ -56,17 +56,13 @@ module.exports = function createServer() {
         res.send("HELLO")
     })
 
-
+    upbit.on("Ticker", (Ticker, market) => io.emit('Ticker', Ticker));
     upbit.on("l2snapshot", (snapshot, market) => io.emit('snapshot', snapshot));
-    upbit.on("trade", (trade, market) => {
-        upbit.on("Ticker", (Ticker, market) => {
-            io.emit('Ticker', trade, Ticker)
-        });
+    upbit.on("trade", (trade, market) => io.emit('trade', trade));
 
-    });
 
-    upbit.subscribeTrades(market);
     upbit.subscribeTicker(market);
+    upbit.subscribeTrades(market);
     upbit.subscribeLevel2Snapshots(market);
 
 
