@@ -27,7 +27,7 @@ function sendmsg(dd, gf) {
 }
 
 upbit.on("Ticker", (Ticker, market) => sendmsg('Ticker', Ticker));
-upbit.on("l2snapshot", (snapshot, market) => sendmsg('snapshot', snapshot, market));
+upbit.on("l2snapshot", (snapshot, market) => sendmsg('snapshot', snapshot));
 upbit.on("trade", (trade, market) => sendmsg('trade', trade));
 
 
