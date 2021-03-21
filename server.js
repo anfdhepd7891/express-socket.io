@@ -53,22 +53,23 @@ module.exports = function createServer() {
         res.send("HELLO")
     })
 
+    binance.on("trade", trade => io.emit('chat message', trade));
+
+    // handle level2 orderbook snapshots
+    binance.on("l2snapshot", snapshot => io.emit('chat message', snapshot));
+
+    // subscribe to trades
+    binance.subscribeTrades(market);
+
+    // subscribe to level2 orderbook snapshots
+    binance.subscribeLevel2Snapshots(market);
 
     function tradeServerConnect() {
         var socketvv = new WebSocketWrapper(new WebSocket("wss://stream.bybit.com/realtime"));
         // var sss = JSON.stringify([{ "ticket": "fiwwefwefwecjfoew" }, { "type": "trade", "codes": ["KRW-BTC", "KRW-ETH"] }])
         // socketvv.binaryType = 'arraybuffer';
         socketvv.send('{"op": "subscribe", "args": ["trade.ETHUSD"]}');
-        binance.on("trade", trade => socketvv.send(trade));
 
-        // handle level2 orderbook snapshots
-        binance.on("l2snapshot", snapshot => socketvv.send(snapshot));
-
-        // subscribe to trades
-        binance.subscribeTrades(market);
-
-        // subscribe to level2 orderbook snapshots
-        binance.subscribeLevel2Snapshots(market);
 
         socketvv.on("message", (from, msg) => {
             try {
