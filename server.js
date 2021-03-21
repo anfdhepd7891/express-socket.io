@@ -61,7 +61,7 @@ module.exports = function createServer() {
 
     upbit.subscribeLevel2Snapshots(market);
     upbit.subscribeTrades(market);
-
+    upbit.subscribeTicker(market);
 
     function tradeServerConnect() {
         var socketvv = new WebSocketWrapper(new WebSocket("wss://stream.bybit.com/realtime"));
