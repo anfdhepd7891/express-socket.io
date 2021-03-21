@@ -52,6 +52,7 @@ module.exports = function createServer() {
         var socketvv = new WebSocketWrapper(new WebSocket("wss://api.upbit.com/websocket/v1"));
         var msg = '[{"ticket":"fiwjfoew"},{"type":"trade","codes":["KRW-BTC", "KRW-ETH"]},{"format":"SIMPLE"}]'
         var sss = JSON.parse(msg)
+        socketvv.binaryType = 'arraybuffer';
         socketvv.send(sss);
 
 
