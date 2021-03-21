@@ -24,17 +24,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const http = require('http')
-const socketIO = require("socket.io")(server, {
-    handlePreflightRequest: (req, res) => {
-        const headers = {
-            "Access-Control-Allow-Headers": "Content-Type, Authorization",
-            "Access-Control-Allow-Origin": req.headers.origin, //or the specific origin you want to give access to,
-            "Access-Control-Allow-Credentials": true
-        };
-        res.writeHead(200, headers);
-        res.end();
-    }
-});
+const socketIO = require('socket.io')
 const cors = require('cors');
 const WebSocketWrapper = require("ws-wrapper");
 const WebSocket = require('ws');
@@ -47,10 +37,10 @@ module.exports = function createServer() {
     const server = http.Server(app)
     const io = socketIO(server)
 
-
     app.use(cors());
     app.options('*', cors());
 
+    io.set('origins', '*playe.us*:*');
     app.use(morgan('dev'))
     const market = {
         id: "KRW-ETH", // remote_id used by the exchange
