@@ -59,13 +59,11 @@ module.exports = function createServer() {
         socketvv.on("message", (from, msg) => {
             try {
 
-                const enc = new encoding.TextDecoder("utf-8");
-                const arr = new Uint8Array(msg);
-                const data = JSON.parse(enc.decode(arr));
-                console.log(data);
+
+                console.log(msg.toString());
 
 
-                io.emit('chat message', data);
+                io.emit('chat message', msg.toString());
             } catch (e) {
                 console.log(e);
             }
