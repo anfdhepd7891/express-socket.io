@@ -120,9 +120,9 @@ module.exports = function createServer() {
 
         socket.on("Ticker", (data) => {
 
+            let ticker = upbit._constructTicker('zz', market);
 
-            const ef = upbit._sendSubTicker(market);
-            socket.emit("Ticker", ef)
+            socket.emit("Ticker", ticker)
 
         })
 
