@@ -18,7 +18,7 @@ module.exports = function createServer() {
     const server = http.Server(app)
 
 
-    const wss = new WebSocket.Server(server);
+    const wss = new WebSocket.Server({ server });
 
 
     const market = {
