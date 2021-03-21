@@ -36,7 +36,11 @@ module.exports = function createServer() {
     const upbit = new ccxws.upbit();
     const server = http.Server(app)
     const io = socketIO(server)
+    app.use(morgan('dev'))
+    app.use(cors());
+    app.options('*', cors());
 
+    io.set('origins', '*:*');
     const market = {
         id: "KRW-ETH", // remote_id used by the exchange
         base: "KRW", // standardized base symbol for Bitcoin
@@ -46,14 +50,11 @@ module.exports = function createServer() {
         console.log("Server started on port 80")
     })
 
-    app.use(morgan('dev'))
-    app.use(cors());
-    app.options('*', cors());
+
 
     app.get('/', function(req, res) {
         res.send("HELLO")
     })
-    io.set('origins', '*:*');
     upbit.on("trade", trade => io.emit('chat message', trade));
 
 
