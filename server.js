@@ -50,7 +50,7 @@ module.exports = function createServer() {
 
     function tradeServerConnect() {
         var socketvv = new WebSocketWrapper(new WebSocket("wss://api.upbit.com/websocket/v1"));
-        var msg = '[{"ticket":"fiwjfoew"},{"type":"trade","codes":["KRW-BTC", "KRW-ETH"]}]'
+        var msg = '[{"ticket":"fiwjfoew"},{"type":"trade","codes":["KRW-BTC.7", "KRW-ETH.7"]},{"format":"SIMPLE"}]'
         socketvv.send(msg);
 
 
