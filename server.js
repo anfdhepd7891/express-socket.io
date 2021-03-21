@@ -32,7 +32,8 @@ const ccxws = require("ccxws");
 module.exports = function createServer() {
 
     const app = express()
-
+    app.use(cors());
+    app.options('*', cors());
     const upbit = new ccxws.upbit();
     const server = http.Server(app)
     const io = socketIO(server, {
@@ -44,10 +45,9 @@ module.exports = function createServer() {
         }
     })
 
-    app.use(cors());
-    app.options('*', cors());
 
-    app.use(morgan('dev'))
+
+
     const market = {
         id: "KRW-ETH", // remote_id used by the exchange
         base: "KRW", // standardized base symbol for Bitcoin
@@ -58,7 +58,7 @@ module.exports = function createServer() {
     })
 
 
-
+    app.use(morgan('dev'))
     app.get('/', function(req, res) {
         res.send("HELLO")
     })
