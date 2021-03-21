@@ -24,7 +24,17 @@
 const express = require('express')
 const morgan = require('morgan')
 const http = require('http')
-const socketIO = require('socket.io')
+const socketIO = require("socket.io")(server, {
+    handlePreflightRequest: (req, res) => {
+        const headers = {
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            "Access-Control-Allow-Origin": req.headers.origin, //or the specific origin you want to give access to,
+            "Access-Control-Allow-Credentials": true
+        };
+        res.writeHead(200, headers);
+        res.end();
+    }
+});
 const cors = require('cors');
 const WebSocketWrapper = require("ws-wrapper");
 const WebSocket = require('ws');
@@ -36,6 +46,7 @@ module.exports = function createServer() {
     const upbit = new ccxws.upbit();
     const server = http.Server(app)
     const io = socketIO(server)
+
     app.use((req, res, next) => {
         res.header('Access-Control-Allow-Origin', '*');
         next();
